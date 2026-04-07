@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MATA STUDIO — Film Production</title>
+<meta name="description" content="A film production studio for stories worth watching twice. Buenos Aires.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;900&family=Inconsolata:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #000000;
+  --film-bg: #08090c;
+  --film-bg-2: #0f1116;
+  --film-line: rgba(255, 255, 255, 0.08);
+  --film-line-bright: rgba(255, 255, 255, 0.2);
+  --white: #f2f2ed;
+  --white-dim: #999992;
+  --cyan: #00e5ff;
+  --cyan-dim: #00a3b3;
+  --warn: #ff3a30;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inconsolata', monospace;
+  background: var(--black);
+  color: var(--white);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+.display { font-family: 'Archivo', sans-serif; font-weight: 900; }
+
+/* Film grain */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 200;
+  opacity: 0.08;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 0.4s steps(4) infinite;
+}
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(-2%, 2%); }
+  50% { transform: translate(2%, -2%); }
+  75% { transform: translate(-2%, -2%); }
+}
+
+/* Top viewer chrome */
+.viewer-top {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  background: var(--black);
+  border-bottom: 1px solid var(--film-line);
+  padding: 0.6rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  font-family: 'Inconsolata', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.viewer-top .left, .viewer-top .right {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+.viewer-top .rec {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--warn);
+}
+.viewer-top .rec::before {
+  content: '';
+  width: 7px; height: 7px;
+  background: var(--warn);
+  border-radius: 50%;
+  animation: blink 1.2s ease infinite;
+}
+@keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0.2; } }
+.viewer-top .timecode { color: var(--cyan); font-weight: 500; }
+
+/* Bottom timeline / scrubber */
+.viewer-bottom {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--black);
+  border-top: 1px solid var(--film-line);
+  padding: 0.8rem 1.5rem;
+  z-index: 100;
+}
+.scrubber {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1.5rem;
+  align-items: center;
+}
+.scrubber .play {
+  display: flex;
+  gap: 0.6rem;
+  font-size: 0.8rem;
+  color: var(--white-dim);
+}
+.scrubber .play span:hover { color: var(--cyan); cursor: pointer; }
+.scrubber .timeline {
+  position: relative;
+  height: 4px;
+  background: var(--film-line);
+}
+.scrubber .timeline .progress {
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  width: 35%;
+  background: var(--cyan);
+}
+.scrubber .timeline .marker {
+  position: absolute;
+  top: -10px;
+  width: 1px;
+  height: 24px;
+  background: var(--film-line-bright);
+}
+.scrubber .timeline .marker::after {
+  content: attr(data-label);
+  position: absolute;
+  top: -16px;
+  left: 0;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--white-dim);
+  white-space: nowrap;
+}
+.scrubber .timeline .marker:hover::after { color: var(--cyan); }
+.scrubber .timeline .marker:hover { background: var(--cyan); }
+.scrubber .timeline .marker a { position: absolute; inset: -10px -20px; }
+.scrubber .codes {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.7rem;
+  color: var(--white-dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Letterbox sections */
+section {
+  position: relative;
+  padding: 6rem 0;
+  border-bottom: 1px solid var(--film-line);
+}
+section::before, section::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  height: 60px;
+  background: var(--black);
+  z-index: 1;
+}
+section::before { top: 0; border-bottom: 1px solid var(--film-line); }
+section::after { bottom: 0; border-top: 1px solid var(--film-line); }
+.frame {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+/* Chapter card */
+.chapter {
+  text-align: center;
+  padding: 8rem 2rem 4rem;
+  background: var(--black);
+  border-bottom: 1px solid var(--film-line);
+  position: relative;
+}
+.chapter .marks {
+  display: flex;
+  justify-content: space-between;
+  max-width: 800px;
+  margin: 0 auto 2rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--white-dim);
+}
+.chapter .ch-num {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 900;
+  font-size: clamp(0.8rem, 1vw, 1rem);
+  letter-spacing: 0.3em;
+  color: var(--cyan);
+  margin-bottom: 1rem;
+}
+.chapter h2 {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 900;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+.chapter h2 .accent { color: var(--cyan); }
+.chapter .deck {
+  font-family: 'Inconsolata', monospace;
+  font-size: 0.85rem;
+  color: var(--white-dim);
+  letter-spacing: 0.05em;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* CHAPTER 00 — Title screen */
+.title-screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 5rem 2rem 6rem;
+  background: var(--black);
+  position: relative;
+  overflow: hidden;
+}
+.title-screen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 50%, rgba(0, 229, 255, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 50%, rgba(255, 58, 48, 0.04) 0%, transparent 50%);
+}
+.title-screen .meta-top {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--white-dim);
+  margin-bottom: auto;
+}
+.title-screen .meta-top span { display: flex; gap: 0.5rem; }
+.title-screen .meta-top .label { color: var(--white-dim); }
+.title-screen .meta-top .value { color: var(--cyan); }
+.title-screen .center {
+  position: relative;
+  z-index: 1;
+  margin: auto 0;
+  animation: fadeIn 1.5s ease 0.2s both;
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.title-screen .studio-tag {
+  font-family: 'Inconsolata', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 2rem;
+}
+.title-screen h1 {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 900;
+  font-size: clamp(4rem, 13vw, 13rem);
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+.title-screen h1 .line { display: block; }
+.title-screen h1 .line:nth-child(2) { color: var(--cyan); font-style: italic; font-weight: 400; font-family: 'Archivo', sans-serif; }
+.title-screen .tagline {
+  font-family: 'Inconsolata', monospace;
+  font-size: 1rem;
+  color: var(--white-dim);
+  letter-spacing: 0.05em;
+  max-width: 50ch;
+  margin: 0 auto;
+}
+.title-screen .meta-bottom {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--white-dim);
+  margin-top: auto;
+}
+.title-screen .countdown {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 900;
+  font-size: 4rem;
+  color: var(--cyan);
+  border: 2px solid var(--cyan);
+  width: 100px; height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin: 2rem auto 0;
+  position: relative;
+}
+.title-screen .countdown::before,
+.title-screen .countdown::after {
+  content: '';
+  position: absolute;
+  background: var(--cyan);
+}
+.title-screen .countdown::before {
+  width: 100%; height: 1px;
+  top: 50%; left: 0;
+}
+.title-screen .countdown::after {
+  width: 1px; height: 100%;
+  left: 50%; top: 0;
+}
+
+/* CHAPTER 01 — Reel */
+.reel-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1px;
+  background: var(--film-line);
+  border: 1px solid var(--film-line);
+}
+.reel-frame {
+  aspect-ratio: 16/9;
+  background: var(--film-bg-2);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.4s ease;
+}
+.reel-frame.span-3 { grid-column: span 3; }
+.reel-frame.span-2 { grid-column: span 2; }
+.reel-frame .bg {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.6s ease;
+}
+.reel-frame:hover .bg { transform: scale(1.04); }
+.reel-frame:hover { z-index: 2; }
+.reel-frame .bg.b1 { background: linear-gradient(135deg, #001a26 0%, #00536d 50%, #00e5ff 100%); }
+.reel-frame .bg.b2 { background: linear-gradient(135deg, #1a0010 0%, #4a002e 50%, #ff3a30 100%); }
+.reel-frame .bg.b3 { background: linear-gradient(135deg, #0d1a00 0%, #2e4d00 50%, #aaff40 100%); }
+.reel-frame .bg.b4 { background: linear-gradient(135deg, #1a1500 0%, #4d3d00 50%, #ffb340 100%); }
+.reel-frame .bg.b5 { background: linear-gradient(135deg, #1a001a 0%, #4d004d 50%, #ff80ff 100%); }
+.reel-frame .bg.b6 { background: linear-gradient(135deg, #001a1a 0%, #004d4d 50%, #80ffff 100%); }
+.reel-frame .label {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 1rem;
+  background: linear-gradient(0deg, rgba(0,0,0,0.95), transparent);
+  font-family: 'Inconsolata', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--white);
+  display: flex;
+  justify-content: space-between;
+}
+.reel-frame .label .num { color: var(--cyan); }
+.reel-frame .corner {
+  position: absolute;
+  top: 0.5rem; left: 0.5rem;
+  font-family: 'Inconsolata', monospace;
+  font-size: 0.6rem;
+  color: var(--white);
+  letter-spacing: 0.1em;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 0.2rem 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+}
+.reel-frame .corner span:last-child { color: var(--cyan); }
+.reel-frame .duration {
+  position: absolute;
+  top: 0.5rem; right: 0.5rem;
+  font-family: 'Inconsolata', monospace;
+  font-size: 0.6rem;
+  color: var(--cyan);
+  background: rgba(0, 0, 0, 0.5);
+  padding: 0.2rem 0.5rem;
+}
+
+/* CHAPTER 02 — Crew/Services as cast list */
+.cast-list {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.cast-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 1.5rem;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--film-line);
+  align-items: center;
+  font-family: 'Inconsolata', monospace;
+}
+.cast-row .role {
+  text-align: right;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--white-dim);
+}
+.cast-row .dots {
+  width: 100px;
+  border-bottom: 1px dotted var(--film-line-bright);
+  margin-bottom: 4px;
+}
+.cast-row .name {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+.cast-row:hover .name { color: var(--cyan); }
+.cast-row:hover .dots { border-color: var(--cyan); }
+
+/* CHAPTER 03 — End credits */
+.credits {
+  text-align: center;
+  padding: 2rem 0;
+}
+.credits .end-card {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 900;
+  font-size: clamp(4rem, 12vw, 12rem);
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  margin-bottom: 3rem;
+}
+.credits .end-card .line { display: block; }
+.credits .end-card .accent { color: var(--cyan); font-style: italic; font-weight: 400; }
+.credits .roll {
+  max-width: 500px;
+  margin: 0 auto 3rem;
+  font-family: 'Inconsolata', monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.credits .roll-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--film-line);
+}
+.credits .roll-row .label { color: var(--white-dim); text-align: right; padding-right: 1rem; }
+.credits .roll-row .value { color: var(--white); text-align: left; padding-left: 1rem; }
+.credits .roll-row .value a { color: var(--cyan); text-decoration: none; border-bottom: 1px solid transparent; transition: border 0.3s ease; }
+.credits .roll-row .value a:hover { border-bottom-color: var(--cyan); }
+.credits .start-btn {
+  display: inline-block;
+  margin-top: 2rem;
+  padding: 1.2rem 2.5rem;
+  border: 2px solid var(--cyan);
+  color: var(--cyan);
+  text-decoration: none;
+  font-family: 'Archivo', sans-serif;
+  font-weight: 900;
+  font-size: 0.9rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+.credits .start-btn:hover {
+  background: var(--cyan);
+  color: var(--black);
+  box-shadow: 0 0 30px rgba(0, 229, 255, 0.4);
+}
+
+/* Padding for fixed bars */
+body { padding-top: 36px; padding-bottom: 56px; }
+
+@media (max-width: 900px) {
+  .viewer-top { padding: 0.5rem 1rem; font-size: 0.6rem; }
+  .viewer-top .right span:nth-child(2),
+  .viewer-top .left span:nth-child(2) { display: none; }
+  .scrubber { grid-template-columns: 1fr; gap: 0.5rem; }
+  .scrubber .codes { font-size: 0.6rem; }
+  .scrubber .timeline .marker::after { display: none; }
+  .title-screen .meta-top, .title-screen .meta-bottom { flex-direction: column; gap: 0.3rem; align-items: center; }
+  .reel-grid { grid-template-columns: repeat(2, 1fr); }
+  .reel-frame.span-3, .reel-frame.span-2 { grid-column: span 1; }
+  .cast-row { grid-template-columns: 1fr; gap: 0.3rem; text-align: center; }
+  .cast-row .role, .cast-row .name { text-align: center; }
+  .cast-row .dots { display: none; }
+  .credits .roll-row { grid-template-columns: 1fr; gap: 0.2rem; padding: 0.6rem 0; }
+  .credits .roll-row .label, .credits .roll-row .value { text-align: center; padding: 0; }
+  .frame { padding: 2rem 1rem; }
+  .chapter { padding: 4rem 1rem 2rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="viewer-top">
+  <div class="left">
+    <span class="rec">REC</span>
+    <span>MATA-STUDIO.MOV</span>
+    <span>1920×1080 · 24fps</span>
+  </div>
+  <div class="right">
+    <span>BUENOS AIRES — AR</span>
+    <span class="timecode">TC 00:00:00:01</span>
+  </div>
+</div>
+
+<section class="title-screen">
+  <div class="meta-top">
+    <span><span class="label">REEL</span> <span class="value">2026</span></span>
+    <span><span class="label">DIR.</span> <span class="value">MATA STUDIO</span></span>
+    <span><span class="label">FORMAT</span> <span class="value">DCP · 4K</span></span>
+  </div>
+  <div class="center">
+    <div class="studio-tag">— A film production studio —</div>
+    <h1>
+      <span class="line">Stories</span>
+      <span class="line">worth watching</span>
+      <span class="line">twice.</span>
+    </h1>
+    <p class="tagline">We make commercials, branded content, and short films for clients who know that one good cut is worth a thousand briefs.</p>
+    <div class="countdown">3</div>
+  </div>
+  <div class="meta-bottom">
+    <span>EST. 2021</span>
+    <span>RUNTIME · 04:32</span>
+    <span>PRESS PLAY ▶</span>
+  </div>
+</section>
+
+<div class="chapter">
+  <div class="marks">
+    <span>◀ 00:01:12</span>
+    <span>CHAPTER MARKER</span>
+    <span>00:04:32 ▶</span>
+  </div>
+  <div class="ch-num">CHAPTER ONE</div>
+  <h2>The <span class="accent">Reel</span></h2>
+  <p class="deck">Twelve recent productions, in no particular order. Click any frame to play.</p>
+</div>
+
+<section id="reel">
+  <div class="frame">
+    <div class="reel-grid">
+      <div class="reel-frame span-3">
+        <div class="bg b1"></div>
+        <div class="corner"><span>SCN</span><span>01</span></div>
+        <span class="duration">02:14</span>
+        <div class="label"><span>Quilmes — Come back home</span><span class="num">i</span></div>
+      </div>
+      <div class="reel-frame span-3">
+        <div class="bg b2"></div>
+        <div class="corner"><span>SCN</span><span>02</span></div>
+        <span class="duration">01:28</span>
+        <div class="label"><span>YPF — Route 40</span><span class="num">ii</span></div>
+      </div>
+      <div class="reel-frame span-2">
+        <div class="bg b3"></div>
+        <div class="corner"><span>SCN</span><span>03</span></div>
+        <span class="duration">00:45</span>
+        <div class="label"><span>Adidas — Pulse</span><span class="num">iii</span></div>
+      </div>
+      <div class="reel-frame span-2">
+        <div class="bg b4"></div>
+        <div class="corner"><span>SCN</span><span>04</span></div>
+        <span class="duration">03:50</span>
+        <div class="label"><span>Movistar — Live</span><span class="num">iv</span></div>
+      </div>
+      <div class="reel-frame span-2">
+        <div class="bg b5"></div>
+        <div class="corner"><span>SCN</span><span>05</span></div>
+        <span class="duration">02:02</span>
+        <div class="label"><span>Globant — Future</span><span class="num">v</span></div>
+      </div>
+      <div class="reel-frame span-3">
+        <div class="bg b6"></div>
+        <div class="corner"><span>SCN</span><span>06</span></div>
+        <span class="duration">01:15</span>
+        <div class="label"><span>Galicia — Out for a walk</span><span class="num">vi</span></div>
+      </div>
+      <div class="reel-frame span-3">
+        <div class="bg b1"></div>
+        <div class="corner"><span>SCN</span><span>07</span></div>
+        <span class="duration">04:20</span>
+        <div class="label"><span>Patagonia — Cold start</span><span class="num">vii</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="chapter">
+  <div class="marks">
+    <span>◀ 02:18:00</span>
+    <span>CHAPTER MARKER</span>
+    <span>04:32:00 ▶</span>
+  </div>
+  <div class="ch-num">CHAPTER TWO</div>
+  <h2>The <span class="accent">Crew</span></h2>
+  <p class="deck">A small studio. Five disciplines. One obsession.</p>
+</div>
+
+<section id="services">
+  <div class="frame">
+    <div class="cast-list">
+      <div class="cast-row">
+        <span class="role">[ Department · 01 ]</span>
+        <span class="dots"></span>
+        <span class="name">Commercials</span>
+      </div>
+      <div class="cast-row">
+        <span class="role">[ Department · 02 ]</span>
+        <span class="dots"></span>
+        <span class="name">Branded Content</span>
+      </div>
+      <div class="cast-row">
+        <span class="role">[ Department · 03 ]</span>
+        <span class="dots"></span>
+        <span class="name">Music Videos</span>
+      </div>
+      <div class="cast-row">
+        <span class="role">[ Department · 04 ]</span>
+        <span class="dots"></span>
+        <span class="name">Short Documentaries</span>
+      </div>
+      <div class="cast-row">
+        <span class="role">[ Department · 05 ]</span>
+        <span class="dots"></span>
+        <span class="name">Post Production</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="chapter">
+  <div class="marks">
+    <span>◀ 04:20:00</span>
+    <span>END CREDITS</span>
+    <span>04:32:00 ▶</span>
+  </div>
+  <div class="ch-num">CHAPTER THREE · END CARD</div>
+</div>
+
+<section id="contact">
+  <div class="frame credits">
+    <h2 class="end-card">
+      <span class="line">Roll</span>
+      <span class="line accent">camera.</span>
+    </h2>
+    <div class="roll">
+      <div class="roll-row"><span class="label">Studio</span><span class="value">MATA</span></div>
+      <div class="roll-row"><span class="label">Based in</span><span class="value">Buenos Aires</span></div>
+      <div class="roll-row"><span class="label">Established</span><span class="value">2021</span></div>
+      <div class="roll-row"><span class="label">Email</span><span class="value"><a href="mailto:hello@matastudio.com">hello@matastudio.com</a></span></div>
+      <div class="roll-row"><span class="label">Phone</span><span class="value">+54 11 5555 4422</span></div>
+      <div class="roll-row"><span class="label">Status</span><span class="value">Booking Q2 / Q3</span></div>
+    </div>
+    <a href="mailto:hello@matastudio.com" class="start-btn">▶ Start a project</a>
+  </div>
+</section>
+
+<div class="viewer-bottom">
+  <div class="scrubber">
+    <div class="play">
+      <span>◀◀</span>
+      <span>▶</span>
+      <span>▶▶</span>
+    </div>
+    <div class="timeline">
+      <div class="progress"></div>
+      <div class="marker" data-label="TITLE" style="left: 0%"><a href="#"></a></div>
+      <div class="marker" data-label="REEL" style="left: 25%"><a href="#reel"></a></div>
+      <div class="marker" data-label="CREW" style="left: 60%"><a href="#services"></a></div>
+      <div class="marker" data-label="CONTACT" style="left: 90%"><a href="#contact"></a></div>
+    </div>
+    <div class="codes">
+      <span>01:35:42</span>
+      <span>/</span>
+      <span>04:32:00</span>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

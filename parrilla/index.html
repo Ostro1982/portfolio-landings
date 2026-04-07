@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Brasa &amp; Salt Daily — Steakhouse, Buenos Aires</title>
+<meta name="description" content="An Argentine steakhouse serving slow fire, dry-aged beef and quiet pride. Palermo, Buenos Aires.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #F2EBDC;
+  --paper-aged: #E8DFCC;
+  --ink: #1a1611;
+  --ink-soft: #3d342a;
+  --ink-faint: #6e6353;
+  --red: #8b1f0f;
+  --red-deep: #5e1408;
+  --rule: #1a1611;
+  --rule-soft: rgba(26, 22, 17, 0.35);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: 'Lora', 'Old Standard TT', Georgia, serif;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "kern", "liga", "onum", "calt";
+  overflow-x: hidden;
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(26, 22, 17, 0.04) 0%, transparent 30%),
+    radial-gradient(circle at 85% 80%, rgba(26, 22, 17, 0.03) 0%, transparent 30%);
+}
+
+/* Aged paper texture */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+.page {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem 3rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* Masthead */
+.masthead {
+  border-top: 4px double var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 0.6rem 0;
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Old Standard TT', Georgia, serif;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+}
+.masthead .left, .masthead .right { display: flex; gap: 1.5rem; }
+
+.title-block {
+  text-align: center;
+  padding: 1rem 0 1.2rem;
+  border-bottom: 4px double var(--rule);
+}
+.title-block .latin {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  letter-spacing: 0.3em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+.title-block h1 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: clamp(3.5rem, 9vw, 8rem);
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.4rem;
+}
+.title-block .motto {
+  font-family: 'Old Standard TT', Georgia, serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+}
+
+.bylineline {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 2rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--rule);
+  font-family: 'Old Standard TT', Georgia, serif;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.bylineline .center { letter-spacing: 0.15em; }
+
+/* Newspaper grid */
+.broadsheet {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin-top: 1.5rem;
+  border-left: 1px solid var(--rule-soft);
+}
+.col {
+  padding: 1.5rem 1.2rem;
+  border-right: 1px solid var(--rule-soft);
+  border-bottom: 1px solid var(--rule-soft);
+}
+.col.span-2 { grid-column: span 2; }
+.col.span-3 { grid-column: span 3; }
+.col.span-4 { grid-column: span 4; }
+
+/* Article styles */
+.article .kicker {
+  font-family: 'Old Standard TT', Georgia, serif;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--red);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.article h2 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: clamp(1.4rem, 2.5vw, 2.2rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.6rem;
+}
+.article h2.huge {
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  font-weight: 900;
+}
+.article .deck {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--ink-soft);
+  font-weight: 400;
+  line-height: 1.4;
+  margin-bottom: 0.8rem;
+}
+.article .byline {
+  font-family: 'Old Standard TT', Georgia, serif;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--ink-faint);
+  padding-bottom: 0.6rem;
+  margin-bottom: 0.8rem;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.article .byline strong { color: var(--ink); font-weight: 700; }
+.article p {
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  margin-bottom: 0.8rem;
+  text-align: justify;
+  hyphens: auto;
+}
+
+/* Drop cap on lead */
+.lead p:first-of-type::first-letter {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 5.5rem;
+  float: left;
+  line-height: 0.85;
+  padding-right: 0.5rem;
+  padding-top: 0.3rem;
+  color: var(--red);
+}
+
+/* Two-col article body */
+.article .body-cols {
+  column-count: 2;
+  column-gap: 1.5rem;
+  column-rule: 1px solid var(--rule-soft);
+}
+.article .body-cols p { margin-bottom: 0.8rem; }
+
+/* Menu as classified ads style */
+.menu-classifieds {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+.menu-cat h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 900;
+  text-align: center;
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.8rem;
+  border-bottom: 2px solid var(--rule);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.menu-item {
+  padding: 0.6rem 0;
+  border-bottom: 1px dotted var(--rule-soft);
+}
+.menu-item .row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.2rem;
+}
+.menu-item h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  flex: 1;
+}
+.menu-item .dots {
+  flex: 1;
+  border-bottom: 2px dotted var(--ink-faint);
+  margin-bottom: 6px;
+  min-width: 20px;
+}
+.menu-item .price {
+  font-family: 'Old Standard TT', Georgia, serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+.menu-item p {
+  font-size: 0.78rem;
+  color: var(--ink-faint);
+  font-style: italic;
+  margin: 0;
+  text-align: left;
+}
+
+/* Pull quote */
+.pullquote {
+  padding: 1.5rem 1rem;
+  margin: 1rem 0;
+  border-top: 2px solid var(--rule);
+  border-bottom: 2px solid var(--rule);
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.4rem;
+  line-height: 1.3;
+  color: var(--ink);
+}
+.pullquote::before {
+  content: '“';
+  font-size: 2rem;
+  color: var(--red);
+  display: block;
+  line-height: 0.5;
+  margin-bottom: 0.5rem;
+}
+.pullquote cite {
+  display: block;
+  font-style: normal;
+  font-family: 'Old Standard TT', serif;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--ink-faint);
+  margin-top: 0.8rem;
+}
+
+/* Reservation classified */
+.reservation {
+  background: var(--ink);
+  color: var(--paper);
+  text-align: center;
+}
+.reservation .kicker { color: var(--paper); }
+.reservation h2 { color: var(--paper); }
+.reservation p { color: rgba(242, 235, 220, 0.75); text-align: center; }
+.reservation a {
+  display: inline-block;
+  margin-top: 0.8rem;
+  padding: 0.7rem 1.5rem;
+  border: 1px solid var(--paper);
+  color: var(--paper);
+  text-decoration: none;
+  font-family: 'Old Standard TT', serif;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  transition: all 0.3s ease;
+}
+.reservation a:hover { background: var(--paper); color: var(--ink); }
+
+/* Weather/info box */
+.infobox {
+  background: var(--paper-aged);
+}
+.infobox .kicker { color: var(--red-deep); }
+.infobox .row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+  border-bottom: 1px dotted var(--rule-soft);
+  font-family: 'Old Standard TT', serif;
+  font-size: 0.8rem;
+}
+.infobox .row:last-child { border: none; }
+.infobox .row span:first-child {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.7rem;
+  color: var(--ink-faint);
+  align-self: center;
+}
+.infobox .row span:last-child { font-weight: 700; }
+
+/* Bottom rules */
+.bottomrule {
+  border-top: 4px double var(--rule);
+  border-bottom: 4px double var(--rule);
+  padding: 1rem 0;
+  text-align: center;
+  margin-top: 1rem;
+}
+.bottomrule p {
+  font-family: 'Old Standard TT', serif;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+footer {
+  text-align: center;
+  padding: 1.5rem 0;
+  font-family: 'Old Standard TT', serif;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--ink-faint);
+}
+
+@media (max-width: 900px) {
+  .page { padding: 1rem 1.2rem; }
+  .masthead { flex-direction: column; gap: 0.3rem; align-items: center; text-align: center; font-size: 0.6rem; }
+  .masthead .left, .masthead .right { gap: 1rem; }
+  .bylineline { grid-template-columns: 1fr; gap: 0.3rem; text-align: center; font-size: 0.6rem; }
+  .broadsheet { grid-template-columns: 1fr; }
+  .col, .col.span-2, .col.span-3, .col.span-4 { grid-column: span 1; }
+  .article .body-cols { column-count: 1; }
+  .menu-classifieds { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="masthead">
+    <div class="left">
+      <span>Vol. VII · No. 1280</span>
+      <span>Established 2019</span>
+    </div>
+    <div class="right">
+      <span>Twenty pesos</span>
+      <span>Independent press</span>
+    </div>
+  </header>
+
+  <div class="title-block">
+    <div class="latin">Carne, fuego et tempus</div>
+    <h1>The Brasa &amp; Salt Daily</h1>
+    <div class="motto">— A steakhouse, and a quiet declaration of principle —</div>
+  </div>
+
+  <div class="bylineline">
+    <span>Palermo · Buenos Aires</span>
+    <span class="center">Tuesday Edition · April 7, 2026</span>
+    <span style="text-align:right">Forecast: warm fire, light wind</span>
+  </div>
+
+  <main class="broadsheet">
+
+    <article class="col span-3 article lead">
+      <div class="kicker">Front page · The house</div>
+      <h2 class="huge">Slow fire, dry-aged beef, and a refusal to hurry.</h2>
+      <div class="deck">For seven years, a small kitchen in Palermo has been quietly defending an old idea: that good food takes time, that producers deserve to be paid fairly, and that nobody should be in a rush at dinner.</div>
+      <div class="byline">By <strong>The Editorial Kitchen</strong> · Reporting from Honduras 5220</div>
+
+      <div class="body-cols">
+        <p>Brasa &amp; Salt opened in the winter of 2019, in a converted casa chorizo on Honduras Street, with one wood-fire grill, two tables, and a rule that has not changed since: nothing leaves the kitchen before it is ready.</p>
+        <p>The cuts come straight from small ranchers in the central provinces. Pasture-raised, grass-finished, animals our chef knows by name and by ranch. The wood is quebracho colorado, the same hardwood gauchos have used on the pampas for two centuries. The salt is mined in Salta. The cooking is by feel, not by clock.</p>
+        <p>What started as a personal project for a former engineer turned cook has grown into one of the most reservation-resistant tables in Buenos Aires. The phone is on a stand by the grill. The reservation book is paper. The waiting list is long, and we have made peace with that.</p>
+        <p>If you are in a rush, this is not your restaurant. If you can spare three hours and an open mind, we will feed you the way our grandparents fed their families: slowly, generously, and without a single shortcut.</p>
+      </div>
+    </article>
+
+    <aside class="col article infobox">
+      <div class="kicker">House notice</div>
+      <h2>The particulars</h2>
+      <div class="row"><span>Address</span><span>Honduras 5220</span></div>
+      <div class="row"><span>District</span><span>Palermo · CABA</span></div>
+      <div class="row"><span>Hours</span><span>Tue–Sun · 8pm</span></div>
+      <div class="row"><span>Closed</span><span>Mondays</span></div>
+      <div class="row"><span>Phone</span><span>+54 11 5555 9876</span></div>
+      <div class="row"><span>Tables</span><span>Twelve</span></div>
+      <div class="row"><span>Booking</span><span>Required</span></div>
+      <div class="row"><span>Tasting menu</span><span>Friday only</span></div>
+    </aside>
+
+    <article class="col span-2 article">
+      <div class="kicker">Section II · The fire</div>
+      <h2>What we mean by "slow fire."</h2>
+      <div class="byline">A note from the grill</div>
+      <p>Most restaurants in this city cook their beef in twelve to fifteen minutes over high heat. We take three to four hours per cut, starting with embers laid down at noon for a service that begins at eight. The result is a difference you can taste in a single bite.</p>
+      <p>It also means we cannot serve you a steak in twenty minutes. It means our grill is burning quebracho from the moment we open until the last guest finishes their wine. It means our gas bill is zero, and our wood bill is considerable.</p>
+      <p>This is not a marketing line. It is the only way we know how to cook a piece of meat that came from an animal that lived a good life.</p>
+    </article>
+
+    <aside class="col article">
+      <div class="kicker">Quoted</div>
+      <blockquote class="pullquote">
+        Cooking is the only profession where impatience is more expensive than ignorance.
+        <cite>Mariano Pereira · Head of grill</cite>
+      </blockquote>
+    </aside>
+
+    <article class="col span-4 article">
+      <div class="kicker">The carte · Section III</div>
+      <h2 class="huge">From the grill, to the table.</h2>
+      <div class="deck">Everything we serve, with no surprises and no upcharges. Wines change weekly and are listed at the table.</div>
+
+      <div class="menu-classifieds">
+        <div class="menu-cat">
+          <h3>To begin</h3>
+          <div class="menu-item">
+            <div class="row"><h4>Sweetbreads</h4><span class="dots"></span><span class="price">9,800</span></div>
+            <p>Crisped over the embers, lemon, mined salt</p>
+          </div>
+          <div class="menu-item">
+            <div class="row"><h4>Provoleta of the field</h4><span class="dots"></span><span class="price">7,200</span></div>
+            <p>Artisanal provolone, oregano, ground chili</p>
+          </div>
+          <div class="menu-item">
+            <div class="row"><h4>Hand-cut empanadas</h4><span class="dots"></span><span class="price">4,500</span></div>
+            <p>Northern recipe, slow-cooked beef, lard pastry</p>
+          </div>
+          <div class="menu-item">
+            <div class="row"><h4>Smoked eggplant</h4><span class="dots"></span><span class="price">5,400</span></div>
+            <p>Char-grilled, lemon yogurt, toasted pine nuts</p>
+          </div>
+        </div>
+
+        <div class="menu-cat">
+          <h3>From the grill</h3>
+          <div class="menu-item">
+            <div class="row"><h4>Ribeye, dry-aged 45 days</h4><span class="dots"></span><span class="price">24,500</span></div>
+            <p>350 grams, quebracho fire, finished with salt only</p>
+          </div>
+          <div class="menu-item">
+            <div class="row"><h4>Pasture flank steak</h4><span class="dots"></span><span class="price">19,800</span></div>
+            <p>Slow-cooked, finished over the high flame</p>
+          </div>
+          <div class="menu-item">
+            <div class="row"><h4>Asado de tira</h4><span class="dots"></span><span class="price">17,500</span></div>
+            <p>Four hours over low embers, chimichurri glaze</p>
+          </div>
+          <div class="menu-item">
+            <div class="row"><h4>Disco-roasted chicken (for two)</h4><span class="dots"></span><span class="price">22,000</span></div>
+            <p>24-hour brine, rustic potatoes</p>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="col span-2 article">
+      <div class="kicker">Section IV · A defense</div>
+      <h2>Why our menu is short.</h2>
+      <p>You will count eight savory dishes and three desserts. That is not an oversight. We make exactly what we believe in. If we cannot do it well, we do not put it on the page. The list is short because the kitchen is small and the standards are not.</p>
+      <p>If you are looking for fusion, you will be disappointed. If you are looking for the best steak you have eaten in this country, you might leave us a letter on your way out.</p>
+    </article>
+
+    <aside class="col span-2 article reservation">
+      <div class="kicker">★ Reservations ★</div>
+      <h2>The book is paper. We answer in person.</h2>
+      <p>Reservations are taken by phone, Tuesday through Sunday, between 11am and 7pm. Weekend tables fill three weeks ahead. Walk-ins are welcomed at the bar, where we serve the same menu and pour the same wine.</p>
+      <a href="https://wa.me/5491155559876">Send WhatsApp →</a>
+    </aside>
+
+  </main>
+
+  <div class="bottomrule">
+    <p>“ Carne, fuego, tiempo. The rest is decoration. ”</p>
+  </div>
+
+  <footer>
+    The Brasa &amp; Salt Daily · Honduras 5220, Palermo, CABA · Printed in good faith since 2019
+  </footer>
+
+</div>
+
+</body>
+</html>
