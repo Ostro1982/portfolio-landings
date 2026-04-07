@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cadence — Your LinkedIn voice, written weekly</title>
+<meta name="description" content="Cadence drafts a week of LinkedIn posts in your voice. You approve. We schedule. A demo by Diego Ostromujof.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Geist+Mono:wght@300..700&family=Geist:wght@300..700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f1ece1;
+  --bg-card: #fbf7ec;
+  --bg-card-2: #ffffff;
+  --ink: #14110b;
+  --ink-2: #3a352a;
+  --muted: #847b66;
+  --rule: #d8d0bb;
+  --rule-strong: #1a1610;
+  --accent: #c8351e;
+  --accent-soft: #f4d8d0;
+  --forest: #2a4636;
+  --gold: #b58535;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Geist', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  background-image:
+    radial-gradient(ellipse at 0% 0%, rgba(200, 53, 30, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 100% 100%, rgba(42, 70, 54, 0.05) 0%, transparent 50%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+/* paper grain */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.45;
+  z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.08 0 0 0 0 0.07 0 0 0 0 0.04 0 0 0 0.07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 3rem;
+  position: relative;
+  z-index: 2;
+}
+
+/* === TOPBAR === */
+.topbar {
+  border-bottom: 1px solid var(--rule-strong);
+  padding: 1.4rem 0;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 2rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.7rem;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.brand svg {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.brand small {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-left: 0.3rem;
+  padding-top: 0.4rem;
+  letter-spacing: 0.18em;
+}
+
+.week-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.week-nav button {
+  background: none;
+  border: 1px solid var(--rule);
+  cursor: pointer;
+  color: var(--ink);
+  font: inherit;
+  padding: 0.45rem 0.75rem;
+  transition: all 0.18s ease;
+}
+.week-nav button:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+.week-nav .current {
+  padding: 0 0.6rem;
+  color: var(--ink);
+}
+
+.topbar-right {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.2rem;
+  align-items: center;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--forest);
+  border: 1px solid var(--ink);
+  color: var(--bg);
+  display: grid;
+  place-items: center;
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.05rem;
+  font-style: italic;
+}
+
+/* === HERO === */
+.hero {
+  padding: 5.5rem 0 3.5rem;
+  display: grid;
+  grid-template-columns: 1.55fr 1fr;
+  gap: 4rem;
+  align-items: end;
+  border-bottom: 1px solid var(--rule);
+}
+
+.hero-left .eyebrow {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-bottom: 1.8rem;
+}
+
+.eyebrow .dot {
+  width: 7px;
+  height: 7px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.85); }
+}
+
+.hero-left h1 {
+  font-family: 'Instrument Serif', serif;
+  font-weight: 400;
+  font-size: clamp(3.4rem, 8vw, 7.8rem);
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+}
+
+.hero-left h1 em {
+  color: var(--accent);
+  font-style: italic;
+}
+
+.hero-left .tagline {
+  font-family: 'Newsreader', serif;
+  font-style: italic;
+  font-size: 1.3rem;
+  color: var(--ink-2);
+  margin-top: 1.6rem;
+  max-width: 38ch;
+  line-height: 1.4;
+}
+
+.hero-right {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem 2rem;
+  padding-bottom: 0.5rem;
+}
+
+.stat {
+  border-top: 1px solid var(--rule-strong);
+  padding-top: 1rem;
+}
+
+.stat .num {
+  font-family: 'Instrument Serif', serif;
+  font-size: 3.4rem;
+  line-height: 1;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: baseline;
+}
+
+.stat .num em { font-style: italic; color: var(--accent); }
+.stat .num .pct { font-size: 1.3rem; color: var(--muted); margin-left: 0.2rem; }
+
+.stat .label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  margin-top: 0.5rem;
+}
+
+/* === PRIMARY: featured + voice panel === */
+.primary {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.featured {
+  padding: 3.5rem 3rem 3.5rem 0;
+  border-right: 1px solid var(--rule);
+}
+
+.post-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-bottom: 1.8rem;
+  flex-wrap: wrap;
+}
+
+.post-meta .day {
+  color: var(--ink);
+  background: var(--accent-soft);
+  padding: 0.32rem 0.7rem;
+  border: 1px solid var(--accent);
+}
+
+.post-meta .format {
+  border: 1px solid var(--rule);
+  padding: 0.32rem 0.7rem;
+}
+
+.post-meta .status {
+  margin-left: auto;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.featured h2 {
+  font-family: 'Instrument Serif', serif;
+  font-weight: 400;
+  font-size: 2.7rem;
+  line-height: 1.08;
+  letter-spacing: -0.022em;
+  color: var(--ink);
+  margin-bottom: 2rem;
+  max-width: 24ch;
+}
+
+.post-body {
+  font-family: 'Newsreader', serif;
+  font-size: 1.05rem;
+  line-height: 1.68;
+  color: var(--ink-2);
+  max-width: 60ch;
+}
+
+.post-body p { margin-bottom: 1rem; }
+
+.post-body p:first-of-type::first-letter {
+  font-family: 'Instrument Serif', serif;
+  font-size: 3.4rem;
+  float: left;
+  line-height: 0.85;
+  padding-right: 0.45rem;
+  padding-top: 0.35rem;
+  color: var(--accent);
+  font-weight: 400;
+}
+
+.post-body em { color: var(--ink); font-style: italic; }
+
+.post-projection {
+  margin-top: 2.2rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  padding: 1.2rem 1.4rem;
+  border: 1px solid var(--rule);
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.post-projection .label {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.6rem;
+  font-family: 'Geist Mono', monospace;
+}
+.post-projection .value {
+  color: var(--ink);
+  font-size: 1.4rem;
+  margin-top: 0.3rem;
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+}
+
+.post-actions {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--rule);
+  flex-wrap: wrap;
+}
+
+.btn {
+  background: none;
+  border: 1px solid var(--ink);
+  padding: 0.78rem 1.3rem;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  cursor: pointer;
+  color: var(--ink);
+  transition: all 0.2s ease;
+}
+.btn:hover { background: var(--ink); color: var(--bg); }
+
+.btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+.btn.primary:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+/* === VOICE PANEL === */
+.voice-panel {
+  padding: 3.5rem 0 3.5rem 3rem;
+  background: rgba(20, 17, 11, 0.025);
+}
+
+.panel-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+  margin-bottom: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.panel-label::before {
+  content: '';
+  width: 26px;
+  height: 1px;
+  background: var(--ink);
+}
+
+.voice-card {
+  background: var(--bg-card);
+  border: 1px solid var(--ink);
+  padding: 1.6rem;
+  margin-bottom: 2rem;
+}
+
+.voice-name {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.7rem;
+  line-height: 1.05;
+  margin-bottom: 0.35rem;
+}
+
+.voice-title {
+  font-family: 'Newsreader', serif;
+  font-style: italic;
+  font-size: 0.92rem;
+  color: var(--muted);
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.voice-bio {
+  font-size: 0.86rem;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.pillars {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+}
+
+.pillar {
+  display: grid;
+  grid-template-columns: 24px 1fr auto;
+  gap: 0.8rem;
+  align-items: center;
+  font-size: 0.86rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px dotted var(--rule);
+}
+.pillar:last-child { border-bottom: none; }
+
+.pillar .num {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  color: var(--accent);
+  font-size: 0.95rem;
+}
+.pillar .name { color: var(--ink); }
+.pillar .pct {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+
+.tone-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tone-row {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+}
+
+.tone-bar {
+  height: 4px;
+  background: var(--rule);
+  position: relative;
+}
+
+.tone-fill {
+  position: absolute;
+  inset: 0;
+  width: var(--pct);
+  background: var(--ink);
+}
+
+.tone-handle {
+  position: absolute;
+  top: 50%;
+  left: var(--pct);
+  transform: translate(-50%, -50%);
+  width: 13px;
+  height: 13px;
+  background: var(--accent);
+  border-radius: 50%;
+  border: 1.5px solid var(--ink);
+  box-shadow: 0 0 0 2px var(--bg);
+}
+
+/* === WEEK STRIP === */
+.week-strip {
+  padding: 4rem 0 4.5rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.strip-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-bottom: 2.5rem;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 1.4rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.strip-header h3 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 2.4rem;
+  font-weight: 400;
+  line-height: 1;
+}
+.strip-header h3 em { color: var(--accent); font-style: italic; }
+
+.strip-header .meta {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+.strip-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1.4rem;
+}
+
+.day-card {
+  border: 1px solid var(--rule);
+  padding: 1.4rem 1.3rem;
+  background: var(--bg-card);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  min-height: 290px;
+}
+
+.day-card:hover {
+  border-color: var(--ink);
+  transform: translateY(-3px);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+
+.day-card .day-num {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-size: 1.7rem;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.day-card .day-name {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  margin: 0.4rem 0 1rem;
+}
+
+.day-card .day-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.1rem;
+  line-height: 1.18;
+  color: var(--ink);
+  margin-bottom: 0.85rem;
+  font-weight: 400;
+}
+
+.day-card .day-preview {
+  font-family: 'Newsreader', serif;
+  font-style: italic;
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.day-card .day-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  border-top: 1px solid var(--rule);
+  padding-top: 0.7rem;
+}
+
+.badge.pending { color: var(--accent); }
+.badge.approved { color: var(--forest); }
+
+/* === FOOTER STRIP === */
+.footer-strip {
+  padding: 5rem 0;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.engine-card {
+  border: 1px solid var(--ink);
+  padding: 2.2rem 2.4rem;
+  background: var(--bg-card-2);
+  box-shadow: 7px 7px 0 var(--ink);
+}
+
+.engine-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+  margin-bottom: 0.9rem;
+}
+
+.engine-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.85rem;
+  line-height: 1.18;
+  font-weight: 400;
+  margin-bottom: 1.8rem;
+  letter-spacing: -0.012em;
+}
+
+.engine-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--rule);
+}
+
+.engine-stats .label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.engine-stats .value {
+  font-size: 1.6rem;
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  margin-top: 0.3rem;
+}
+
+.cta-block {
+  text-align: right;
+}
+
+.cta-block h4 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 2.5rem;
+  line-height: 1;
+  font-weight: 400;
+  margin-bottom: 1.3rem;
+  letter-spacing: -0.02em;
+}
+.cta-block h4 em { color: var(--accent); font-style: italic; }
+
+.cta-block p {
+  font-family: 'Newsreader', serif;
+  font-style: italic;
+  color: var(--muted);
+  margin-bottom: 1.6rem;
+  font-size: 1rem;
+}
+
+/* === SITE FOOTER === */
+.footer {
+  border-top: 1px solid var(--rule-strong);
+  padding: 2rem 0;
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+.footer a { color: var(--ink); text-decoration: none; border-bottom: 1px dotted var(--rule); }
+.footer a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* fade-in */
+.anim {
+  opacity: 0;
+  transform: translateY(14px);
+  animation: rise 0.85s ease forwards;
+}
+.anim.d1 { animation-delay: 0.05s; }
+.anim.d2 { animation-delay: 0.18s; }
+.anim.d3 { animation-delay: 0.32s; }
+.anim.d4 { animation-delay: 0.46s; }
+.anim.d5 { animation-delay: 0.6s; }
+
+@keyframes rise {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* responsive */
+@media (max-width: 1100px) {
+  .container { padding: 0 2rem; }
+  .primary { grid-template-columns: 1fr; }
+  .voice-panel { padding: 3rem 0; border-top: 1px solid var(--rule); margin-top: 0; }
+  .featured { border-right: none; padding-right: 0; }
+  .strip-grid { grid-template-columns: repeat(3, 1fr); }
+  .footer-strip { grid-template-columns: 1fr; gap: 2.5rem; }
+  .cta-block { text-align: left; }
+  .hero { gap: 2.5rem; }
+}
+
+@media (max-width: 720px) {
+  .container { padding: 0 1.2rem; }
+  .topbar { grid-template-columns: 1fr; gap: 1rem; padding: 1rem 0; }
+  .topbar-right { justify-content: flex-start; }
+  .week-nav { justify-content: flex-start; }
+  .hero { grid-template-columns: 1fr; padding: 3rem 0 2.5rem; gap: 2.5rem; }
+  .hero-right { grid-template-columns: 1fr 1fr; gap: 1rem 1.4rem; }
+  .stat .num { font-size: 2.6rem; }
+  .strip-grid { grid-template-columns: 1fr; }
+  .featured { padding: 2.5rem 0; }
+  .featured h2 { font-size: 1.85rem; }
+  .post-body { font-size: 1rem; }
+  .strip-header h3 { font-size: 1.6rem; }
+  .engine-title { font-size: 1.4rem; }
+  .cta-block h4 { font-size: 1.9rem; }
+  .footer { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header class="topbar">
+    <div class="brand">
+      <svg viewBox="0 0 32 32" fill="none">
+        <circle cx="16" cy="16" r="14" stroke="#14110b" stroke-width="1.5"/>
+        <circle cx="16" cy="16" r="5.5" fill="#c8351e"/>
+        <line x1="3" y1="22" x2="29" y2="9" stroke="#14110b" stroke-width="1.5"/>
+      </svg>
+      Cadence
+      <small>v 0.4 · beta</small>
+    </div>
+    <nav class="week-nav">
+      <button>◀</button>
+      <span class="current">Week 15 · Apr 07 — 13, 2026</span>
+      <button>▶</button>
+    </nav>
+    <div class="topbar-right">
+      <span>Marta G.</span>
+      <div class="avatar">M</div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-left anim d1">
+      <div class="eyebrow">
+        <span class="dot"></span>
+        Week 15 / 2026 · Draft ready for review
+      </div>
+      <h1>Your week<br>is <em>written.</em></h1>
+      <p class="tagline">Seven posts. Drafted in your voice. Waiting on a single approval before they hit your feed.</p>
+    </div>
+    <div class="hero-right anim d2">
+      <div class="stat">
+        <div class="num">07</div>
+        <div class="label">Drafts ready</div>
+      </div>
+      <div class="stat">
+        <div class="num">05</div>
+        <div class="label">Approved</div>
+      </div>
+      <div class="stat">
+        <div class="num"><em>02</em></div>
+        <div class="label">Pending review</div>
+      </div>
+      <div class="stat">
+        <div class="num">94<span class="pct">%</span></div>
+        <div class="label">Voice match</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="primary">
+    <article class="featured anim d3">
+      <div class="post-meta">
+        <span class="day">Mon · Apr 07</span>
+        <span class="format">Story · 1,180 chars</span>
+        <span class="status">● Pending review</span>
+      </div>
+      <h2>The biggest deal we lost last quarter taught me what "compliance-first" actually means.</h2>
+      <div class="post-body">
+        <p>Three weeks of demos. Two procurement calls. A signed LOI from the Head of Operations. Then Legal killed it on a Friday at 6 PM with a single sentence: <em>"Your data residency story doesn't pass audit."</em></p>
+        <p>I was furious. We had the cheapest offer, the best UX, the strongest references. We had built for the buyer. We had forgotten who actually held the veto.</p>
+        <p>Here's what changed inside Resolve after that loss:</p>
+        <p>We rewrote the pitch deck around <em>compliance posture</em>, not features. We hired a fractional CISO before our seventh customer. We started every demo with a single slide that says: <em>here's where your data lives, who can see it, and what we'd do if you got subpoenaed</em>.</p>
+        <p>That deck closes 38% more deals now. Same product. Same team. Same price. We just stopped pretending Legal wasn't in the room.</p>
+        <p>If you sell into regulated industries in LATAM, the buyer is never the buyer. Build for the gatekeeper.</p>
+      </div>
+      <div class="post-projection">
+        <div>
+          <div class="label">Est. Reach</div>
+          <div class="value">12,400</div>
+        </div>
+        <div>
+          <div class="label">Est. Reactions</div>
+          <div class="value">340</div>
+        </div>
+        <div>
+          <div class="label">Voice match</div>
+          <div class="value">96%</div>
+        </div>
+      </div>
+      <div class="post-actions">
+        <button class="btn primary">Approve &amp; schedule</button>
+        <button class="btn">Edit draft</button>
+        <button class="btn">Regenerate</button>
+      </div>
+    </article>
+
+    <aside class="voice-panel anim d4">
+      <div class="panel-label">Voice profile</div>
+      <div class="voice-card">
+        <div class="voice-name">Marta Goldberg</div>
+        <div class="voice-title">Founder &amp; CEO · Resolve Legal</div>
+        <p class="voice-bio">B2B legal-tech for regulated industries in LATAM. Ex-corporate lawyer. Posts about founder reality, compliance buying, and selling into Spanish-speaking enterprise.</p>
+      </div>
+
+      <div class="panel-label">Content pillars</div>
+      <div class="pillars">
+        <div class="pillar"><span class="num">i.</span><span class="name">Founder reality</span><span class="pct">28%</span></div>
+        <div class="pillar"><span class="num">ii.</span><span class="name">Selling into LATAM</span><span class="pct">24%</span></div>
+        <div class="pillar"><span class="num">iii.</span><span class="name">Compliance &amp; legal</span><span class="pct">22%</span></div>
+        <div class="pillar"><span class="num">iv.</span><span class="name">Hiring &amp; team</span><span class="pct">14%</span></div>
+        <div class="pillar"><span class="num">v.</span><span class="name">Personal · Family</span><span class="pct">12%</span></div>
+      </div>
+
+      <div class="panel-label">Tone calibration</div>
+      <div class="tone-controls">
+        <div>
+          <div class="tone-row"><span>Reserved</span><span>Direct</span></div>
+          <div class="tone-bar"><div class="tone-fill" style="--pct: 78%;"></div><div class="tone-handle" style="--pct: 78%;"></div></div>
+        </div>
+        <div>
+          <div class="tone-row"><span>Formal</span><span>Conversational</span></div>
+          <div class="tone-bar"><div class="tone-fill" style="--pct: 64%;"></div><div class="tone-handle" style="--pct: 64%;"></div></div>
+        </div>
+        <div>
+          <div class="tone-row"><span>Cautious</span><span>Contrarian</span></div>
+          <div class="tone-bar"><div class="tone-fill" style="--pct: 71%;"></div><div class="tone-handle" style="--pct: 71%;"></div></div>
+        </div>
+        <div>
+          <div class="tone-row"><span>Generic</span><span>Specific</span></div>
+          <div class="tone-bar"><div class="tone-fill" style="--pct: 92%;"></div><div class="tone-handle" style="--pct: 92%;"></div></div>
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <section class="week-strip">
+    <div class="strip-header">
+      <h3>The rest of the <em>week</em></h3>
+      <span class="meta">06 drafts · 05 approved · 01 pending</span>
+    </div>
+    <div class="strip-grid">
+
+      <article class="day-card">
+        <div class="day-num">08</div>
+        <div class="day-name">Tue · Contrarian</div>
+        <h4 class="day-title">"Ship fast" is malpractice in legal-tech.</h4>
+        <p class="day-preview">Everyone parrots the SaaS gospel: ship fast, learn faster, iterate. In legal-tech that's a one-way ticket to sanctions, lost licenses, and a very expensive lawsuit at 2 AM...</p>
+        <div class="day-meta">
+          <span>978 chars</span>
+          <span class="badge approved">● Approved</span>
+        </div>
+      </article>
+
+      <article class="day-card">
+        <div class="day-num">09</div>
+        <div class="day-name">Wed · Listicle</div>
+        <h4 class="day-title">5 things I wish I knew before raising in LATAM.</h4>
+        <p class="day-preview">A Delaware C-Corp doesn't unlock anything if your customers, payroll and contracts all live in three different countries. Your safe note isn't safe. Your termsheet has hidden FX risk...</p>
+        <div class="day-meta">
+          <span>1,420 chars</span>
+          <span class="badge approved">● Approved</span>
+        </div>
+      </article>
+
+      <article class="day-card">
+        <div class="day-num">10</div>
+        <div class="day-name">Thu · Case study</div>
+        <h4 class="day-title">How we cut onboarding from 14 days to 90 minutes.</h4>
+        <p class="day-preview">Our first multinational pilot handed us a 14-day onboarding checklist. Three pilots later, we'd compressed it to a single Tuesday morning. Here's the four-step audit we ran...</p>
+        <div class="day-meta">
+          <span>1,310 chars</span>
+          <span class="badge approved">● Approved</span>
+        </div>
+      </article>
+
+      <article class="day-card">
+        <div class="day-num">11</div>
+        <div class="day-name">Fri · Personal</div>
+        <h4 class="day-title">I worked 71 hours this week. I'm not proud of it.</h4>
+        <p class="day-preview">My eight-year-old asked me, on Wednesday, if I still lived in our house. I'm writing this on Friday at 11 PM, in the same chair where she found me on Tuesday. Something has to give...</p>
+        <div class="day-meta">
+          <span>880 chars</span>
+          <span class="badge pending">● Pending review</span>
+        </div>
+      </article>
+
+      <article class="day-card">
+        <div class="day-num">12</div>
+        <div class="day-name">Sat · Frame</div>
+        <h4 class="day-title">"Compliance-first" changed our entire deal velocity.</h4>
+        <p class="day-preview">Last quarter we stopped leading with features. We started leading with the audit trail. Three sentences about where data lives, two about subpoena response, one about SOC 2. Velocity doubled...</p>
+        <div class="day-meta">
+          <span>1,050 chars</span>
+          <span class="badge approved">● Approved</span>
+        </div>
+      </article>
+
+      <article class="day-card">
+        <div class="day-num">13</div>
+        <div class="day-name">Sun · Question</div>
+        <h4 class="day-title">Founders in regulated industries — speed vs liability?</h4>
+        <p class="day-preview">Honest question, not a setup. We're trying to ship a feature that auto-responds to regulatory inquiries. Half our advisors say "do it." Half say "you'll get deposed." How do you decide?</p>
+        <div class="day-meta">
+          <span>720 chars</span>
+          <span class="badge approved">● Approved</span>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="footer-strip">
+    <div class="engine-card anim d5">
+      <div class="engine-label">Generation engine · learning loop</div>
+      <h3 class="engine-title">Cadence has read every post you've ever published, every comment you've left, and every podcast you've appeared on.</h3>
+      <div class="engine-stats">
+        <div>
+          <div class="label">Voice samples</div>
+          <div class="value">412</div>
+        </div>
+        <div>
+          <div class="label">Avg. match</div>
+          <div class="value">94%</div>
+        </div>
+        <div>
+          <div class="label">Edits per draft</div>
+          <div class="value">1.3</div>
+        </div>
+      </div>
+    </div>
+    <div class="cta-block">
+      <h4>Next week is <em>already drafted.</em></h4>
+      <p>Cadence runs every Sunday at 22:00. Approve, edit, or skip — the queue is yours.</p>
+      <button class="btn primary">Preview week 16 →</button>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Cadence — A demo by Diego Ostromujof</span>
+    <span><a href="../">← back to portfolio</a></span>
+  </footer>
+
+</div>
+
+</body>
+</html>

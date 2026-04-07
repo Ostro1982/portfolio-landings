@@ -28,6 +28,11 @@ Three landing page demos for fictional clients, each built with a deliberately d
 **Why:** A film studio's site should feel like film equipment. Title screen, chapter markers, end credits, frame grid for the reel.
 **Stack:** HTML + CSS only. Archivo + Inconsolata.
 
+### 04 · Cadence — `/cadence`
+**Layout:** Editorial SaaS dashboard — magazine-style asymmetric grid for an AI LinkedIn ghostwriter app. Hero headline, featured post with drop cap and projected stats, voice profile sidebar with tone calibration, six-day card grid, generation engine card with offset shadow.
+**Why:** A writing tool deserves a writing-tool interface — typography-driven, paper-textured, opinionated. Built as both a portfolio piece and a viable product mockup.
+**Stack:** HTML + CSS only. Instrument Serif + Newsreader + Geist + Geist Mono.
+
 ---
 
 ## Stack
